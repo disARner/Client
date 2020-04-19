@@ -1,29 +1,55 @@
-import {createStackNavigator, createAppContainer} from 'react-navigation';
+import React from 'react';
+import {createStackNavigator} from '@react-navigation/stack';
 import {Platform} from 'react-native';
 
-import ProductsOverviewScreen from '../screens/shop/ProductsOverviewScreen';
-import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
+import ProductsOverviewScreen, {
+  screenOptions as ProductOverviewScreenOptions,
+} from '../screens/shop/ProductsOverviewScreen';
+import ProductDetailScreen, {
+  screenOptions as ProductDetailScreenOptions,
+} from '../screens/shop/ProductDetailScreen';
 import Colors from '../constants/Colors';
 
-const ProductsNavigator = createStackNavigator(
-  {
-    ProductsOverview: ProductsOverviewScreen,
-    ProductDetail: ProductDetailScreen,
+const defaultNavOptions = {
+  headerStyle: {
+    backgroundColor: Platform.OS === 'android' ? Colors.primary : '',
   },
-  {
-    defaultNavigationOptions: {
-      headerStyle: {
-        backgroundColor: Platform.OS === 'android' ? Colors.primary : '',
-      },
-      headerTitleStyle: {
-        fontFamily: 'OpenSans-Bold',
-      },
-      headerBackTitleStyle: {
-        fontFamily: 'OpenSans-Bold',
-      },
-      headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
-    },
+  headerTitleStyle: {
+    fontFamily: 'OpenSans-Bold',
   },
-);
+  headerBackTitleStyle: {
+    fontFamily: 'OpenSans-Bold',
+  },
+  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
+};
 
-export default createAppContainer(ProductsNavigator);
+const ProductsStackNavigator = createStackNavigator();
+
+export const ProductsNavigator = () => {
+  return (
+    <ProductsStackNavigator.Navigator screenOptions={defaultNavOptions}>
+      <ProductsStackNavigator.Screen
+        name="ProductsOverview"
+        component={ProductsOverviewScreen}
+        options={ProductOverviewScreenOptions}
+      />
+      <ProductsStackNavigator.Screen
+        name="ProductDetail"
+        component={ProductDetailScreen}
+        options={ProductDetailScreenOptions}
+      />
+    </ProductsStackNavigator.Navigator>
+  );
+};
+
+// const ProductsNavigator = createStackNavigator(
+//   {
+//     ProductsOverview: ProductsOverviewScreen,
+//     ProductDetail: ProductDetailScreen,
+//   },
+//   {
+//     defaultNavigationOptions: defaultNavOptions,
+//   },
+// );
+
+// export default createAppContainer(ProductsNavigator);

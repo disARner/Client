@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, {useEffect, useRef, useState} from 'react';
 import {Animated, Dimensions, StyleSheet, Text, View} from 'react-native';
 import {createStore, combineReducers} from 'redux';
@@ -7,7 +8,7 @@ import {composeWithDevTools} from 'redux-devtools-extension';
 
 import productsReducer from './src/store/reducers/products';
 import cartReducer from './src/store/reducers/cart';
-import ShopNavigator from './src/navigation/ShopNavigator';
+import AppNavigator from './src/navigation/AppNavigator';
 
 const rootReducer = combineReducers({
   products: productsReducer,
@@ -85,7 +86,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <ShopNavigator />
+      <AppNavigator />
     </Provider>
   );
 }
