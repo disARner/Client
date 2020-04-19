@@ -3,15 +3,18 @@ import {Animated, Dimensions, StyleSheet, Text, View} from 'react-native';
 import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
 import BootSplash from 'react-native-bootsplash';
+import {composeWithDevTools} from 'redux-devtools-extension';
 
 import productsReducer from './src/store/reducers/products';
+import cartReducer from './src/store/reducers/cart';
 import ShopNavigator from './src/navigation/ShopNavigator';
 
 const rootReducer = combineReducers({
   products: productsReducer,
+  cart: cartReducer,
 });
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, composeWithDevTools());
 
 const bootSplashLogo = require('./src/assets/bootsplash_logo.png');
 const fakeApiCallWithoutBadNetwork = ms =>
