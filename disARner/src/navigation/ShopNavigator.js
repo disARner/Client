@@ -12,7 +12,7 @@ import Colors from '../constants/Colors';
 
 const defaultNavOptions = {
   headerStyle: {
-    backgroundColor: Platform.OS === 'android' ? Colors.primary : '',
+    backgroundColor: 'white',
   },
   headerTitleStyle: {
     fontFamily: 'AirbnbCerealBold',
@@ -41,15 +41,3 @@ export const ProductsNavigator = () => {
     </ProductsStackNavigator.Navigator>
   );
 };
-
-// const ProductsNavigator = createStackNavigator(
-//   {
-//     ProductsOverview: ProductsOverviewScreen,
-//     ProductDetail: ProductDetailScreen,
-//   },
-//   {
-//     defaultNavigationOptions: defaultNavOptions,
-//   },
-// );
-
-// export default createAppContainer(ProductsNavigator);

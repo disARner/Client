@@ -1,10 +1,11 @@
 import 'react-native-gesture-handler';
 import React, {useEffect, useRef, useState} from 'react';
 import {Animated, Dimensions, StyleSheet, Text, View} from 'react-native';
-import {createStore, combineReducers} from 'redux';
+import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import BootSplash from 'react-native-bootsplash';
 import {composeWithDevTools} from 'redux-devtools-extension';
+import Reduxthunk from 'redux-thunk';
 
 import productsReducer from './src/store/reducers/products';
 import cartReducer from './src/store/reducers/cart';
@@ -15,7 +16,11 @@ const rootReducer = combineReducers({
   cart: cartReducer,
 });
 
-const store = createStore(rootReducer, composeWithDevTools());
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(),
+  applyMiddleware(Reduxthunk),
+);
 
 const bootSplashLogo = require('./src/assets/bootsplash_logo.png');
 const fakeApiCallWithoutBadNetwork = ms =>
@@ -31,7 +36,7 @@ export default function App() {
     BootSplash.hide();
 
     // You can uncomment this line to add a delay on app startup
-    let data = await fakeApiCallWithoutBadNetwork(3000);
+    let data = await fakeApiCallWithoutBadNetwork(1000);
 
     let useNativeDriver = true;
 

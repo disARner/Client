@@ -17,7 +17,6 @@ const ProductItem = props => {
   if (Platform.OS === 'android' && Platform.Version >= 21) {
     TouchableCmp = TouchableNativeFeedback;
   }
-
   return (
     <View style={styles.product}>
       <View style={styles.touchable}>
@@ -28,20 +27,9 @@ const ProductItem = props => {
             </View>
             <View style={styles.details}>
               <Text style={styles.title}>{props.title}</Text>
-              <Text style={styles.price}>${props.price.toFixed(2)}</Text>
+              <Text style={styles.price}>Rp. {props.price.toFixed(2)}</Text>
             </View>
-            <View style={styles.actions}>
-              <Button
-                color={Colors.primary}
-                title="View Details"
-                onPress={props.onViewDetail}
-              />
-              <Button
-                color={Colors.primary}
-                title="To Cart"
-                onPress={props.onAddToCart}
-              />
-            </View>
+            <View style={styles.actions} />
           </View>
         </TouchableCmp>
       </View>
@@ -53,12 +41,13 @@ const styles = StyleSheet.create({
   product: {
     shadowColor: 'black',
     shadowOpacity: 0.26,
-    shadowOffset: {width: 0, height: 2},
-    shadowRadius: 8,
-    elevation: 5,
-    borderRadius: 10,
-    backgroundColor: 'white',
-    height: 300,
+    shadowOffset: {width: 0, height: 1},
+    shadowRadius: 4,
+    // elevation: 0.5,
+    // borderRadius: 6,
+    backgroundColor: 'transparent',
+    height: 190,
+    width: 110,
     margin: 20,
   },
   touchable: {
@@ -66,15 +55,15 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   imageContainer: {
-    width: '100%',
-    height: '60%',
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    // width: '100%',
+    // height: '70%',
+    elevation: 1,
+    borderRadius: 6,
     overflow: 'hidden',
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: 110,
+    height: 140,
   },
   details: {
     alignItems: 'center',
@@ -82,13 +71,13 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   title: {
-    fontSize: 18,
+    fontSize: 12,
     marginVertical: 4,
     fontFamily: 'AirbnbCerealMedium',
   },
   price: {
-    fontSize: 14,
-    color: '#888',
+    fontSize: 10,
+    color: Colors.accent,
     fontFamily: 'AirbnbCerealBook',
   },
   actions: {
