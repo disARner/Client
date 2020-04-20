@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginVertical: 4,
     fontFamily: 'AirbnbCerealMedium',
+    color: Colors.blackish,
   },
   price: {
     fontSize: 10,

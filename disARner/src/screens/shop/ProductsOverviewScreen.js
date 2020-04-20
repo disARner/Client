@@ -19,6 +19,7 @@ import NewItem from '../../components/shop/NewItem';
 import * as cartActions from '../../store/actions/cart';
 import * as productActions from '../../store/actions/products';
 import HeaderButton from '../../components/UI/Headerbutton';
+import Colors from '../../constants/Colors';
 
 const ProductsOverviewScreen = props => {
   let TouchableCmp = TouchableOpacity;
@@ -151,7 +152,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   productHorizontal: {
-    backgroundColor: 'white',
+    backgroundColor: '#ffffff',
     // paddingBottom: 20,
     // flex: 2,
   },
@@ -174,11 +175,13 @@ const styles = StyleSheet.create({
     fontFamily: 'AirbnbCerealMedium',
     fontSize: 16,
     textAlign: 'center',
+    color: Colors.blackish,
     // marginBottom: 25,
   },
   popularProductText: {
     fontFamily: 'AirbnbCerealBook',
     fontSize: 18,
+    color: Colors.blackish,
   },
   popularTextContainer: {
     marginLeft: 15,
@@ -191,11 +194,12 @@ const styles = StyleSheet.create({
     width: 83,
     alignItems: 'center',
     justifyContent: 'space-around',
+    color: Colors.blackish,
   },
   rectangle: {
     width: '100%',
     height: 4,
-    backgroundColor: 'black',
+    backgroundColor: Colors.blackish,
     alignSelf: 'flex-end',
     // alignSelf: 'flex-end',
     // flex: 1,
