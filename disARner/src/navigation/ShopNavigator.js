@@ -15,10 +15,10 @@ const defaultNavOptions = {
     backgroundColor: Platform.OS === 'android' ? Colors.primary : '',
   },
   headerTitleStyle: {
-    fontFamily: 'OpenSans-Bold',
+    fontFamily: 'AirbnbCerealBold',
   },
   headerBackTitleStyle: {
-    fontFamily: 'OpenSans-Bold',
+    fontFamily: 'AirbnbCerealAppExtraBold',
   },
   headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
 };

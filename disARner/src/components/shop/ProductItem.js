@@ -84,12 +84,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     marginVertical: 4,
-    fontFamily: 'OpenSans-Bold',
+    fontFamily: 'AirbnbCerealMedium',
   },
   price: {
     fontSize: 14,
     color: '#888',
-    fontFamily: 'OpenSans-Regular',
+    fontFamily: 'AirbnbCerealBook',
   },
   actions: {
     flexDirection: 'row',
