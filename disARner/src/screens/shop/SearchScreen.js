@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {CommonActions} from '@react-navigation/native';
+import {useSelector, useDispatch} from 'react-redux';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -15,9 +16,13 @@ import Colors from '../../constants/Colors';
 const SearchScreen = props => {
   const [text, setText] = useState('');
 
+  const products = useSelector(state => state.products.availableProducts);
+  const dispatch = useDispatch();
+
   const backButton = () => {
     props.navigation.dispatch(CommonActions.goBack());
   };
+
   return (
     <View>
       <View style={styles.searchBoxOutter}>
