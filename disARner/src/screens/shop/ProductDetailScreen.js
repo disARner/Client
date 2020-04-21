@@ -43,15 +43,27 @@ const ProductDetailScreen = props => {
         backgroundColor="transparent"
       />
       <View style={styles.headerBar}>
-        <View style={styles.circle}>
-          <HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item title="Cart" iconName="md-arrow-back" onPress={() => {}} />
-          </HeaderButtons>
-        </View>
-        <View stylee={styles.circle}>
-          <HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item title="Cart" iconName="md-cart" onPress={() => {}} />
-          </HeaderButtons>
+        <View style={[styles.headerContainer, {width: windowWidth}]}>
+          <View style={styles.circle}>
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+              <Item
+                buttonWrapperStyle={styles.circleWrapper}
+                title="Back"
+                iconName="md-arrow-back"
+                onPress={() => {}}
+              />
+            </HeaderButtons>
+          </View>
+          <View stylee={styles.circle}>
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+              <Item
+                buttonWrapperStyle={styles.circleWrapper}
+                title="Cart"
+                iconName="md-cart"
+                onPress={() => {}}
+              />
+            </HeaderButtons>
+          </View>
         </View>
       </View>
       <View style={{width: windowWidth}}>
@@ -67,8 +79,9 @@ const ProductDetailScreen = props => {
             <Text style={styles.price}>
               Rp. {selectedProduct.price.toFixed(2)}
             </Text>
+            <Text>Description</Text>
           </View>
-          <View style={{backgroundColor: 'transparent', height: 55}} />
+          <View style={{backgroundColor: 'white', paddingVertical: '5%'}} />
           <View style={[styles.buttonContainer]}>
             <TouchableCmp onPress={() => {}}>
               <View style={styles.buttonCircle}>
@@ -130,9 +143,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flexDirection: 'row',
     flexGrow: 1,
-    height: 150,
-    padding: 25,
-    paddingVertical: '15%',
+    // height: 150,
+    // padding: 25,
+    paddingVertical: '10%',
     // alignItems: 'center',
     justifyContent: 'center',
   },
@@ -175,14 +188,34 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   headerBar: {
-    backgroundColor: 'transparent',
-    marginVertical: 30,
+    // backgroundColor: 'transparent',
+    // marginVertical: 30,
     position: 'absolute',
     zIndex: 1,
+    // flexDirection: 'row',
+    // justifyContent: 'space-between',
+  },
+  headerContainer: {
+    backgroundColor: 'transparent',
+    marginVertical: 30,
+    position: 'relative',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    padding: 10,
   },
   circle: {
+    // width: 50,
+    // height: 50,
+    // borderRadius: 100 / 2,
+    // backgroundColor: 'white',
+    // shadowColor: 'black',
+    // shadowOpacity: 0.26,
+    // shadowOffset: {width: 0, height: 6},
+    // shadowRadius: 8,
+    // elevation: 8,
+    position: 'relative',
+  },
+  circleWrapper: {
     width: 50,
     height: 50,
     borderRadius: 100 / 2,
@@ -192,6 +225,8 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 6},
     shadowRadius: 8,
     elevation: 8,
+    // top: 10,
+    // left: 10,
   },
 });
 
