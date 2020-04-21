@@ -51,14 +51,14 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   touchable: {
-    borderRadius: 10,
+    borderRadius: 6,
     overflow: 'hidden',
   },
   imageContainer: {
     // width: '100%',
     // height: '70%',
-    elevation: 1,
-    borderRadius: 6,
+    elevation: 0.5,
+    borderRadius: 4,
     overflow: 'hidden',
   },
   image: {

@@ -13,6 +13,7 @@ import {
   Platform,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import {CommonActions} from '@react-navigation/native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -26,11 +27,15 @@ const ProductDetailScreen = props => {
     state.products.availableProducts.find(prod => prod.id === productId),
   );
   const dispatch = useDispatch();
-
+  console.log(selectedProduct);
   let TouchableCmp = TouchableOpacity;
   if (Platform.OS === 'android' && Platform.Version >= 21) {
     TouchableCmp = TouchableOpacity;
   }
+
+  const back = () => {
+    props.navigation.dispatch(CommonActions.goBack());
+  };
 
   const windowWidth = Dimensions.get('screen').width;
   const windowHeight = Dimensions.get('window').height;
@@ -50,7 +55,9 @@ const ProductDetailScreen = props => {
                 buttonWrapperStyle={styles.circleWrapper}
                 title="Back"
                 iconName="md-arrow-back"
-                onPress={() => {}}
+                onPress={() => {
+                  back();
+                }}
               />
             </HeaderButtons>
           </View>
@@ -79,7 +86,9 @@ const ProductDetailScreen = props => {
             <Text style={styles.price}>
               Rp. {selectedProduct.price.toFixed(2)}
             </Text>
-            <Text>Description</Text>
+            <Text style={styles.descriptionText}>
+              {selectedProduct.description}
+            </Text>
           </View>
           <View style={{backgroundColor: 'white', paddingVertical: '5%'}} />
           <View style={[styles.buttonContainer]}>
@@ -101,13 +110,6 @@ const ProductDetailScreen = props => {
                 <Text style={styles.buttonAddText}>Add to Cart</Text>
               </View>
             </TouchableCmp>
-            {/* <Button
-              color={Colors.primary}
-              title="Add to Cart"
-              onPress={() => {
-                dispatch(cartActions.addToCart(selectedProduct));
-              }}
-            /> */}
           </View>
         </View>
       </View>
@@ -133,20 +135,13 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   action: {
-    // marginVertical: 10,
-    // alignItems: 'center',
-    // paddingVertical: 10,
-    // flexDirection: 'column',
     height: '100%',
   },
   buttonContainer: {
     backgroundColor: 'white',
     flexDirection: 'row',
     flexGrow: 1,
-    // height: 150,
-    // padding: 25,
-    paddingVertical: '10%',
-    // alignItems: 'center',
+    // paddingVertical: '15%',
     justifyContent: 'center',
   },
   price: {
@@ -154,6 +149,11 @@ const styles = StyleSheet.create({
     color: Colors.accent,
     marginVertical: 20,
     fontFamily: 'AirbnbCerealMedium',
+  },
+  descriptionText: {
+    fontFamily: 'AirbnbCerealLight',
+    color: Colors.blackish,
+    fontSize: 14,
   },
   buttonAdd: {
     height: 50,
@@ -188,12 +188,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   headerBar: {
-    // backgroundColor: 'transparent',
-    // marginVertical: 30,
     position: 'absolute',
     zIndex: 1,
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
   },
   headerContainer: {
     backgroundColor: 'transparent',
@@ -204,15 +200,6 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   circle: {
-    // width: 50,
-    // height: 50,
-    // borderRadius: 100 / 2,
-    // backgroundColor: 'white',
-    // shadowColor: 'black',
-    // shadowOpacity: 0.26,
-    // shadowOffset: {width: 0, height: 6},
-    // shadowRadius: 8,
-    // elevation: 8,
     position: 'relative',
   },
   circleWrapper: {
@@ -225,8 +212,6 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 6},
     shadowRadius: 8,
     elevation: 8,
-    // top: 10,
-    // left: 10,
   },
 });
 

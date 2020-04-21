@@ -2,14 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {
-  View,
-  Text,
-  Platform,
-  TouchableOpacity,
-  TouchableNativeFeedback,
-  StyleSheet,
-} from 'react-native';
+import {View, Text, Platform, TouchableOpacity, StyleSheet} from 'react-native';
 
 import ProductsOverviewScreen, {
   screenOptions as ProductOverviewScreenOptions,
@@ -17,6 +10,8 @@ import ProductsOverviewScreen, {
 import ProductDetailScreen, {
   screenOptions as ProductDetailScreenOptions,
 } from '../screens/shop/ProductDetailScreen';
+import SearchScreen from '../screens/shop/SearchScreen';
+
 import Colors from '../constants/Colors';
 
 const defaultNavOptions = {
@@ -72,10 +67,12 @@ function MyTabBar({state, descriptors, navigation}) {
         let iconName;
         if (route.name === 'Home') {
           iconName = 'md-home';
-        } else if (route.name === 'Wishlist') {
-          iconName = 'md-heart';
+        } else if (route.name === 'Orders') {
+          iconName = 'md-list-box';
         } else if (route.name === 'Profile') {
           iconName = 'md-contact';
+        } else if (route.name === 'Search') {
+          iconName = 'md-search';
         }
         return (
           <TouchableOpacity
@@ -88,6 +85,7 @@ function MyTabBar({state, descriptors, navigation}) {
             key={index}>
             <Ionicons
               name={iconName}
+              // eslint-disable-next-line react-native/no-inline-styles
               style={{textAlign: 'center'}}
               color={isFocused ? Colors.blackish : Colors.grayish}
               size={25}
@@ -106,7 +104,8 @@ const HomeTabs = () => {
   return (
     <Tab.Navigator tabBar={props => <MyTabBar {...props} />}>
       <Tab.Screen name="Home" component={ProductsOverviewScreen} />
-      <Tab.Screen name="Wishlist" component={ProductsOverviewScreen} />
+      <Tab.Screen name="Orders" component={ProductsOverviewScreen} />
+      <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen name="Profile" component={ProductsOverviewScreen} />
     </Tab.Navigator>
   );
@@ -138,6 +137,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 80,
     backgroundColor: 'white',
-    elevation: 10,
+    elevation: 6,
+    borderTopEndRadius: 5,
+    borderTopStartRadius: 5,
   },
 });

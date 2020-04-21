@@ -52,13 +52,13 @@ const ProductsOverviewScreen = props => {
           <TouchableCmp>
             <View style={styles.textContainer}>
               <Text style={styles.categoryText}>Art</Text>
-              <View style={styles.rectangle} />
+              {/* <View style={styles.rectangle} /> */}
             </View>
           </TouchableCmp>
           <TouchableCmp>
             <View style={styles.textContainer}>
               <Text style={styles.categoryText}>Symbol</Text>
-              <View style={styles.rectangle} />
+              {/* <View style={styles.rectangle} /> */}
             </View>
           </TouchableCmp>
         </View>
