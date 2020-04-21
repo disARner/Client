@@ -2,36 +2,43 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  Image,
-  Button,
   StyleSheet,
   StatusBar,
   Dimensions,
+  TextInput
 } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
+// import { useSelector, useDispatch } from 'react-redux';
 // import {} from '../../store';
 import Colors from '../../constants/Colors';
 
 
-const LoginScreen = () => {
-  const dispatch = useDispatch();
+const LoginScreen = ({ navigation }) => {
+  // const dispatch = useDispatch();
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const windowWidth = Dimensions.get('screen').width;
 
-  const handleSubmit = () => {
+  const handleLogin = () => {
     //dispatch()
     console.log(email, password)
   };
 
+  const handleRegister = () => {
+    //dispatch()
+    navigation.navigate('RegisterScreen')
+  };
+
   return (
-    <View style={{ backgroundColor: '#F5FCFF'}}>
+    <View style={styles.container}>
       <StatusBar
         translucent
         barStyle={'dark-content'}
         backgroundColor="transparent"
       />
-      <View style={{width: windowWidth}}>
+      <View style={{ ...styles.container, width: windowWidth, marginBottom: 100 }}>
+        <Text style={{ ...styles.titleText, margin: 50, fontSize: 50 }}>
+          disARner
+        </Text>
         <Text style={styles.titleText}>
           Login
         </Text>
@@ -41,6 +48,8 @@ const LoginScreen = () => {
             style={styles.textInput}
             autoFocus
             autoCompleteType="off"
+            textContentType="emailAddress"
+            keyboardType="email-address"
             onChangeText={text => setEmail(text)}
           />
         </View>
@@ -56,8 +65,11 @@ const LoginScreen = () => {
           />
         </View>
 
-        <View style={{ ...styles.button, width: 150, marginVertical: 15, paddingHorizontal: 5 }} onTouchStart={handleSubmit}>
+        <View style={{ ...styles.button, width: 150, marginVertical: 15, paddingHorizontal: 5 }} onTouchStart={handleLogin}>
           <Text style={{ ...styles.buttonText, fontSize: 15 }}>Login</Text>
+        </View>
+        <View style={{ ...styles.button, width: 150, marginVertical: 15, paddingHorizontal: 5 }} onTouchStart={handleRegister}>
+          <Text style={{ ...styles.buttonText, fontSize: 15 }}>Register</Text>
         </View>
       </View>
     </View>
@@ -67,6 +79,18 @@ const LoginScreen = () => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f7f7f7',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  titleText: {
+    fontSize: 30,
+    color: '#37315e',
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
   inputGroup: {
     padding: 5
   },
@@ -81,7 +105,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fdfdfd',
     borderRadius: 15,
     width: 300,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    elevation: 5
   },
   button: {
     flexDirection: 'row',
@@ -89,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 15,
     borderRadius: 20,
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.blackish,
     width: 200
   },
   buttonText: {

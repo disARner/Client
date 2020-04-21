@@ -7,14 +7,15 @@ import {
   StyleSheet,
   StatusBar,
   Dimensions,
+  TextInput
 } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
+// import { useSelector, useDispatch } from 'react-redux';
 // import {} from '../../store';
 import Colors from '../../constants/Colors';
 
 
-const LoginScreen = () => {
-  const dispatch = useDispatch();
+const LoginScreen = ({ navigation: { goBack }}) => {
+  // const dispatch = useDispatch();
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -23,16 +24,17 @@ const LoginScreen = () => {
   const handleSubmit = () => {
     //dispatch()
     console.log(username, email, password)
+    goBack()
   };
 
   return (
-    <View style={{ backgroundColor: '#F5FCFF'}}>
+    <View style={styles.container}>
       <StatusBar
         translucent
         barStyle={'dark-content'}
         backgroundColor="transparent"
       />
-      <View style={{width: windowWidth}}>
+      <View style={{ ...styles.container, width: windowWidth, marginBottom: 100 }}>
         <Text style={styles.titleText}>
           Register
         </Text>
@@ -53,6 +55,8 @@ const LoginScreen = () => {
             style={styles.textInput}
             autoFocus
             autoCompleteType="off"
+            textContentType="emailAddress"
+            keyboardType="email-address"
             onChangeText={text => setEmail(text)}
           />
         </View>
@@ -68,8 +72,8 @@ const LoginScreen = () => {
           />
         </View>
 
-        <View style={{ ...styles.button, width: 150, marginVertical: 15, paddingHorizontal: 5 }} onTouchStart={handleSubmit}>
-          <Text style={{ ...styles.buttonText, fontSize: 15 }}>Login</Text>
+        <View style={{ ...styles.button, width: 150, marginVertical: 20, paddingHorizontal: 5 }} onTouchStart={handleSubmit}>
+          <Text style={{ ...styles.buttonText, fontSize: 15 }}>Submit</Text>
         </View>
       </View>
     </View>
@@ -79,8 +83,21 @@ const LoginScreen = () => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f7f7f7',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  titleText: {
+    fontSize: 30,
+    color: '#37315e',
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
   inputGroup: {
-    padding: 5
+    padding: 5,
+    margin: 10
   },
   inputLabel: {
     fontWeight: 'bold',
@@ -93,7 +110,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fdfdfd',
     borderRadius: 15,
     width: 300,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    elevation: 5
   },
   button: {
     flexDirection: 'row',
@@ -101,8 +119,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 15,
     borderRadius: 20,
-    backgroundColor: Colors.primary,
-    width: 200
+    backgroundColor: Colors.blackish,
+    width: 200,
   },
   buttonText: {
     fontSize: 16,
