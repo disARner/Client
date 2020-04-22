@@ -8,6 +8,7 @@ import {
   TouchableNativeFeedback,
   Platform,
   ImageBackground,
+  ScrollView,
 } from 'react-native';
 
 import Colors from '../../constants/Colors';
@@ -28,6 +29,11 @@ const NewItem = props => {
             <View style={{flex: 2}} />
             <View style={styles.infoContainer}>
               <Text style={styles.title}>{props.title}</Text>
+              {/* <View> */}
+              <ScrollView>
+                <Text style={styles.description}>{props.description}</Text>
+              </ScrollView>
+              {/* </View> */}
             </View>
           </ImageBackground>
         </View>
@@ -65,18 +71,23 @@ const styles = StyleSheet.create({
   infoContainer: {
     alignContent: 'flex-end',
     flex: 1,
-    marginLeft: 20,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    paddingLeft: 20,
   },
   title: {
     fontSize: 18,
-    marginVertical: 4,
+    marginVertical: 10,
     fontFamily: 'AirbnbCerealExtraBold',
-    color: '#7e7e7e',
+    color: Colors.grayish,
   },
   price: {
     fontSize: 14,
     color: '#888',
     fontFamily: 'AirbnbCerealBook',
+  },
+  description: {
+    color: Colors.grayish,
+    fontFamily: 'AirbnbCerealLight',
   },
 });
 

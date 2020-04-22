@@ -35,8 +35,13 @@ const ProductDetailScreen = props => {
   };
 
   const windowWidth = Dimensions.get('screen').width;
-  const windowHeight = Dimensions.get('window').height;
 
+  const addToCart = async () => {
+    await dispatch(
+      cartActions.addCart({ItemId: selectedProduct.id, quantity: 1}),
+    );
+    await dispatch(cartActions.fetchCarts());
+  };
   return (
     <ScrollView>
       <StatusBar
@@ -101,7 +106,7 @@ const ProductDetailScreen = props => {
             </TouchableCmp>
             <TouchableCmp
               onPress={() => {
-                dispatch(cartActions.addToCart(selectedProduct));
+                addToCart();
               }}>
               <View style={styles.buttonAdd}>
                 <Text style={styles.buttonAddText}>Add to Cart</Text>

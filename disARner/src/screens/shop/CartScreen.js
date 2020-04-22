@@ -25,13 +25,10 @@ import CartItem from '../../components/shop/CartItem';
 import Colors from '../../constants/Colors';
 
 const CartCard = props => {
-  //quantity sama stock diganti data dr db
   const [quantity, setQuantity] = useState(props.quantity);
 
   const stock = props.stock;
-  // useEffect(async () => {
-  //   await
-  // })
+  const dispatch = useDispatch();
 
   const addQuantityHandler = async () => {
     try {
@@ -49,8 +46,7 @@ const CartCard = props => {
           token: token,
         },
       });
-
-      console.log(result.data);
+      await dispatch(cartActions.fetchCarts());
     } catch (err) {
       console.log(err);
       if (err.response) {
@@ -75,12 +71,18 @@ const CartCard = props => {
           token: token,
         },
       });
-      console.log(result.data);
+
+      await dispatch(cartActions.fetchCarts());
     } catch (err) {
       if (err.response) {
         console.log(err.response.data);
       }
     }
+  };
+
+  const removeCart = async () => {
+    await dispatch(cartActions.removeCart(props.id));
+    await dispatch(cartActions.fetchCarts());
   };
 
   return (
@@ -121,6 +123,7 @@ const CartCard = props => {
         </View>
       </View>
       <TouchableOpacity
+        onPress={removeCart}
         style={{
           ...styles.button,
           height: 30,
@@ -154,9 +157,11 @@ const CheckoutScreen = props => {
   const dispatch = useDispatch();
 
   const carts = useSelector(state => state.cart.carts);
+  const total = useSelector(state => state.cart.total);
+  console.log(total);
   useEffect(() => {
     dispatch(cartActions.fetchCarts());
-  }, []);
+  }, [dispatch]);
 
   const checkout = async () => {
     try {
@@ -168,7 +173,7 @@ const CheckoutScreen = props => {
           token: token,
         },
       });
-      dispatch(cartActions.fetchCarts());
+      await dispatch(cartActions.fetchCarts());
       console.log(result.data);
     } catch (err) {
       console.log(err);
@@ -198,8 +203,8 @@ const CheckoutScreen = props => {
           )}
         />
       ) : (
-        <View style={{flex: 1}}>
-          <Text>No Carts Yet!</Text>
+        <View style={styles.emptyItemContainer}>
+          <Text style={styles.emptyItemText}>No carts yet</Text>
         </View>
       )}
       <View style={styles.cartBottomController}>
@@ -208,10 +213,10 @@ const CheckoutScreen = props => {
             Total Harga:
           </Text>
           <Text style={{fontFamily: 'AirbnbCerealBook'}}>
-            {CurrencyFormatter(375000)}
+            {CurrencyFormatter(total)}
           </Text>
         </View>
-        <TouchableOpacity style={styles.button} onPress={checkout()}>
+        <TouchableOpacity style={styles.button} onPress={checkout}>
           <Text style={styles.buttonText}>Checkout</Text>
         </TouchableOpacity>
       </View>
@@ -228,6 +233,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 30,
+  },
+  emptyItemText: {
+    fontFamily: 'AirbnbCerealLight',
+    fontSize: 24,
+    color: '#7e7e7e',
+  },
+  emptyItemContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
   },
   titleText: {
     fontSize: 30,
@@ -299,6 +314,7 @@ const styles = StyleSheet.create({
     height: '15%',
     backgroundColor: '#fdfdfd',
     elevation: 10,
+    // flex: 1,
   },
 });
 

@@ -1,7 +1,7 @@
-import {SET_CARTS} from '../actions/cart';
+import {SET_CARTS, SET_TOTAL} from '../actions/cart';
 const initialState = {
   carts: [],
-  // userProducts: PRODUCTS.filter(prod => prod.ownerId === 'u1'),
+  total: 0,
 };
 
 export default (state = initialState, action) => {
@@ -9,6 +9,11 @@ export default (state = initialState, action) => {
     case SET_CARTS:
       return {
         carts: action.payload,
+      };
+    case SET_TOTAL:
+      console.log(action.payload, 'dari cart reducer set-total');
+      return {
+        carts: {...initialState, total: action.payload},
       };
     default:
       return state;
