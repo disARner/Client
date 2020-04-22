@@ -8,21 +8,26 @@ import {
   FlatList,
 } from 'react-native';
 import {CommonActions} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import * as cartActions from '../../store/actions/cart';
+
 import CartItem from '../../components/shop/CartItem';
+import Colors from '../../constants/Colors';
 
 const CartScreen = props => {
   const [text, setText] = useState('');
   const [filteredStates, setFilteredStates] = useState([]);
+  const dispatch = useDispatch();
 
   const products = useSelector(state => state.products.availableProducts);
+  const carts = useSelector(state => state.cart.carts);
+  useEffect(() => {
+    dispatch(cartActions.fetchCarts());
+  }, []);
 
-  const backButton = () => {
-    props.navigation.dispatch(CommonActions.goBack());
-    setText('');
-  };
+  console.log(carts, 'dari Cartscreens');
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -36,100 +41,74 @@ const CartScreen = props => {
     return () => clearTimeout(timer);
   }, [products, text]);
 
+  const backButton = () => {
+    props.navigation.dispatch(CommonActions.goBack());
+    setText('');
+  };
+
   return (
     <View>
-      <View style={styles.searchBoxOutter}>
-        <View style={styles.serachBoxContainer}>
-          <View>
-            <TouchableOpacity
-              onPress={() => {
-                backButton();
-              }}>
-              <Ionicons name="md-arrow-back" size={30} />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.searchBox}>
-            <TextInput
-              value={text}
-              onChangeText={value => setText(value)}
-              textAlign={'left'}
-              placeholder='Try "Nike"'
-              style={styles.inputStyle}
+      <View style={{marginVertical: 20}}>
+        <FlatList
+          data={carts.CartItems}
+          renderItem={itemData => (
+            <CartItem
+              image={itemData.item.Item.imageUrl}
+              title={itemData.item.Item.name}
+              price={itemData.item.Item.price}
+              quantity={itemData.item.quantity}
+              description={itemData.item.description}
+              onViewDetail={() => {
+                props.navigation.navigate('ProductDetail', {
+                  productId: itemData.item.id,
+                  productTitle: itemData.item.name,
+                });
+              }}
             />
-          </View>
-          <View>
-            <TouchableOpacity>
-              <Ionicons name="md-search" size={30} />
-            </TouchableOpacity>
-          </View>
-        </View>
+          )}
+        />
       </View>
-      <View>
-        {filteredStates.length && text.length > 1 ? (
-          <FlatList
-            data={filteredStates}
-            renderItem={itemData => (
-              <CartItem
-                image={itemData.item.imageUrl}
-                title={itemData.item.name}
-                price={itemData.item.price}
-                description={itemData.item.description}
-                onViewDetail={() => {
-                  props.navigation.navigate('ProductDetail', {
-                    productId: itemData.item.id,
-                    productTitle: itemData.item.name,
-                  });
-                }}
-              />
-            )}
-          />
-        ) : (
-          <View style={styles.emptyItemContainer}>
-            {text.length ? (
-              <Text style={styles.emptyItemText}>Searching...</Text>
-            ) : null}
-          </View>
-        )}
+      <View style={styles.actionContainer}>
+        <View style={{accent: 10}}>
+          <Text style={{fontFamily: 'AirbnbCerealMedium'}}>Total:</Text>
+          <Text style={styles.textTotal}>Rp. 20.125</Text>
+        </View>
+        <View style={styles.buttonAdd}>
+          <Text style={styles.buttonAddText}>Checkout</Text>
+        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  searchBoxOutter: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 20,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 5,
-    paddingBottom: 5,
-    backgroundColor: '#f7f7f7',
-    elevation: 2,
-    borderRadius: 4,
-  },
-  searchBox: {
-    flex: 1,
-    paddingLeft: 2,
-    paddingRight: 2,
-  },
-  serachBoxContainer: {
+  actionContainer: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingLeft: 20,
+    paddingRight: 20,
   },
-  inputStyle: {
-    fontFamily: 'AirbnbCerealLight',
-  },
-  emptyItemText: {
-    fontFamily: 'AirbnbCerealLight',
-    fontSize: 18,
-    color: '#7e7e7e',
-  },
-  emptyItemContainer: {
+  buttonAdd: {
+    height: 50,
+    width: 180,
+    backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 6,
+  },
+  buttonAddText: {
+    color: 'white',
+    fontFamily: 'AirbnbCerealMedium',
+    fontSize: 14,
+    fontWeight: '400',
+  },
+  textTotal: {
+    fontFamily: 'AirbnbCerealBook',
+    fontSize: 18,
+    color: Colors.accent,
+    alignSelf: 'flex-end',
   },
 });
 

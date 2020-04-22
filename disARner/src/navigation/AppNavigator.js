@@ -13,7 +13,6 @@ const AppNavigator = props => {
     dispatch(authActions.checkLogin());
   }, [dispatch]);
 
-  console.log('dari appnavigator');
   return (
     <NavigationContainer>
       {auth ? <ProductsNavigator /> : <AuthNavigator />}

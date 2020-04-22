@@ -30,7 +30,9 @@ const CartItem = props => {
               <Text style={styles.title}>{props.title}</Text>
               <Text style={styles.price}>{CurrencyFormatter(props.price)}</Text>
               <View style={{padding: 2, width: '85%'}}>
-                <Text style={styles.description}>Jumlah: 2</Text>
+                <Text style={styles.description}>
+                  Quantity: {props.quantity}
+                </Text>
               </View>
             </View>
             <View style={styles.actions} />
@@ -84,6 +86,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.accent,
     fontFamily: 'AirbnbCerealBook',
+    width: '100%',
   },
   description: {
     fontFamily: 'AirbnbCerealLight',

@@ -135,7 +135,7 @@ export const screenOptions = navData => {
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Cart"
-          iconName={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
+          iconName={Platform.OS === 'android' ? 'ios-log-out' : 'ios-log-out'}
           onPress={() => dispatch(authActions.logout())}
         />
       </HeaderButtons>

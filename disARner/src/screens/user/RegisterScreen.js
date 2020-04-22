@@ -22,7 +22,6 @@ const RegisterScreen = ({navigation: {goBack}}) => {
 
   const handleSubmit = () => {
     //dispatch()
-    console.log(username, email, password);
     goBack();
   };
 

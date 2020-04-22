@@ -1,39 +1,16 @@
-import {ADD_TO_CART} from '../actions/cart';
-import CartItem from '../../dummy_data/models/cart-item';
-
+import {SET_CARTS} from '../actions/cart';
 const initialState = {
-  items: {},
-  totalAmount: 0,
+  carts: [],
+  // userProducts: PRODUCTS.filter(prod => prod.ownerId === 'u1'),
 };
 
-export default (state = initialState, actions) => {
-  switch (actions.type) {
-    case ADD_TO_CART:
-      const addedProduct = actions.product;
-      const productPrice = addedProduct.price;
-      const productTitle = addedProduct.title;
-
-      if (state.items[addedProduct.id]) {
-        //already have the item in the card
-        const updatedOrNewCartItem = new CartItem(
-          state.items[addedProduct.id].quantity + 1,
-          productPrice,
-          productTitle,
-          state.items[addedProduct.id].sum + productPrice,
-        );
-      } else {
-        const newCartItem = new CartItem(
-          1,
-          productPrice,
-          productTitle,
-          productPrice,
-        );
-        return {
-          ...state,
-          items: {...state.items, [addedProduct.id]: newCartItem},
-          totalAmount: state.totalAmount + productPrice,
-        };
-      }
+export default (state = initialState, action) => {
+  switch (action.type) {
+    case SET_CARTS:
+      return {
+        carts: action.payload,
+      };
+    default:
+      return state;
   }
-  return state;
 };
