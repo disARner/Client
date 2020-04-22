@@ -1,12 +1,23 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
+import {useSelector, useDispatch} from 'react-redux';
 
-import {ProductsNavigator} from './ShopNavigator';
+import {ProductsNavigator, AuthNavigator} from './ShopNavigator';
+import * as authActions from '../store/actions/auth';
 
 const AppNavigator = props => {
+  const dispatch = useDispatch();
+  const auth = useSelector(state => state.userdata.auth);
+
+  useEffect(() => {
+    dispatch(authActions.checkLogin());
+  }, [dispatch]);
+
+  console.log('dari appnavigator');
   return (
     <NavigationContainer>
-      <ProductsNavigator />
+      {auth ? <ProductsNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 };

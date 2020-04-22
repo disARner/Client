@@ -11,8 +11,12 @@ import ProductDetailScreen, {
   screenOptions as ProductDetailScreenOptions,
 } from '../screens/shop/ProductDetailScreen';
 import SearchScreen from '../screens/shop/SearchScreen';
+import CartScreen from '../screens/shop/CartScreen';
+import LoginsCreen from '../screens/user/LoginScreen';
+import RegisterScreen from '../screens/user/RegisterScreen';
 
 import Colors from '../constants/Colors';
+import LoginScreen from '../screens/user/LoginScreen';
 
 const defaultNavOptions = {
   headerStyle: {
@@ -67,7 +71,7 @@ function MyTabBar({state, descriptors, navigation}) {
         let iconName;
         if (route.name === 'Home') {
           iconName = 'md-home';
-        } else if (route.name === 'Orders') {
+        } else if (route.name === 'Cart') {
           iconName = 'md-list-box';
         } else if (route.name === 'Profile') {
           iconName = 'md-contact';
@@ -104,7 +108,7 @@ const HomeTabs = () => {
   return (
     <Tab.Navigator tabBar={props => <MyTabBar {...props} />}>
       <Tab.Screen name="Home" component={ProductsOverviewScreen} />
-      <Tab.Screen name="Orders" component={ProductsOverviewScreen} />
+      <Tab.Screen name="Cart" component={CartScreen} />
       <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen name="Profile" component={ProductsOverviewScreen} />
     </Tab.Navigator>
@@ -126,6 +130,11 @@ export const ProductsNavigator = () => {
         component={ProductDetailScreen}
         options={ProductDetailScreenOptions}
       />
+      <ProductsStackNavigator.Screen
+        name="CartScreen"
+        component={CartScreen}
+        options={ProductDetailScreenOptions}
+      />
     </ProductsStackNavigator.Navigator>
   );
 };
@@ -142,3 +151,24 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 5,
   },
 });
+
+const AuthStackNavigator = createStackNavigator();
+const authScreenOptions = {
+  headerShown: false,
+};
+export const AuthNavigator = () => {
+  return (
+    <AuthStackNavigator.Navigator screenOptions={authScreenOptions}>
+      <AuthStackNavigator.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{animationTypeForReplace: 'pop'}}
+      />
+      <AuthStackNavigator.Screen
+        name="Register"
+        component={RegisterScreen}
+        options={{headerShown: true}}
+      />
+    </AuthStackNavigator.Navigator>
+  );
+};

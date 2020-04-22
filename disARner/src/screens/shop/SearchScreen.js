@@ -1,27 +1,40 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import {CommonActions} from '@react-navigation/native';
-import {useSelector, useDispatch} from 'react-redux';
-
+import {useSelector} from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import Colors from '../../constants/Colors';
+import SearchItem from '../../components/shop/SearchItem';
 
 const SearchScreen = props => {
   const [text, setText] = useState('');
+  const [filteredStates, setFilteredStates] = useState([]);
 
   const products = useSelector(state => state.products.availableProducts);
-  const dispatch = useDispatch();
 
   const backButton = () => {
     props.navigation.dispatch(CommonActions.goBack());
+    setText('');
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const filter = products.filter(state => {
+        return state.name.toLowerCase().includes(text.toLowerCase());
+      });
+
+      setFilteredStates(filter);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [products, text]);
 
   return (
     <View>
@@ -37,8 +50,8 @@ const SearchScreen = props => {
           </View>
           <View style={styles.searchBox}>
             <TextInput
+              value={text}
               onChangeText={value => setText(value)}
-              defaultValue={text}
               textAlign={'left'}
               placeholder='Try "Nike"'
               style={styles.inputStyle}
@@ -51,7 +64,33 @@ const SearchScreen = props => {
           </View>
         </View>
       </View>
-      <Text>{text}</Text>
+      <View>
+        {filteredStates.length && text.length > 1 ? (
+          <FlatList
+            data={filteredStates}
+            renderItem={itemData => (
+              <SearchItem
+                image={itemData.item.imageUrl}
+                title={itemData.item.name}
+                price={itemData.item.price}
+                description={itemData.item.description}
+                onViewDetail={() => {
+                  props.navigation.navigate('ProductDetail', {
+                    productId: itemData.item.id,
+                    productTitle: itemData.item.name,
+                  });
+                }}
+              />
+            )}
+          />
+        ) : (
+          <View style={styles.emptyItemContainer}>
+            {text.length ? (
+              <Text style={styles.emptyItemText}>Searching...</Text>
+            ) : null}
+          </View>
+        )}
+      </View>
     </View>
   );
 };
@@ -82,6 +121,15 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     fontFamily: 'AirbnbCerealLight',
+  },
+  emptyItemText: {
+    fontFamily: 'AirbnbCerealLight',
+    fontSize: 18,
+    color: '#7e7e7e',
+  },
+  emptyItemContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

@@ -11,7 +11,7 @@ import {
 
 import Colors from '../../constants/Colors';
 
-const ProductItem = props => {
+const CartItem = props => {
   let TouchableCmp = TouchableOpacity;
   if (Platform.OS === 'android' && Platform.Version >= 21) {
     TouchableCmp = TouchableNativeFeedback;
@@ -20,13 +20,16 @@ const ProductItem = props => {
     <View style={styles.product}>
       <View style={styles.touchable}>
         <TouchableCmp onPress={props.onViewDetail} useForeground>
-          <View>
+          <View style={styles.rowContainer}>
             <View style={styles.imageContainer}>
               <Image style={styles.image} source={{uri: props.image}} />
             </View>
             <View style={styles.details}>
               <Text style={styles.title}>{props.title}</Text>
               <Text style={styles.price}>Rp. {props.price.toFixed(2)}</Text>
+              <View style={{padding: 2, width: '85%'}}>
+                <Text style={styles.description}>Jumlah: 2</Text>
+              </View>
             </View>
             <View style={styles.actions} />
           </View>
@@ -42,18 +45,22 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.26,
     shadowOffset: {width: 0, height: 1},
     shadowRadius: 4,
-    backgroundColor: 'transparent',
-    height: 190,
-    width: 110,
-    margin: 20,
+    backgroundColor: 'white',
+    elevation: 1,
+    marginRight: 20,
+    marginLeft: 20,
+    marginBottom: 10,
+    borderRadius: 4,
+  },
+  rowContainer: {
+    flexDirection: 'row',
   },
   touchable: {
-    borderRadius: 6,
+    borderRadius: 4,
     overflow: 'hidden',
   },
   imageContainer: {
-    elevation: 0.5,
-    borderRadius: 4,
+    elevation: 10,
     overflow: 'hidden',
   },
   image: {
@@ -61,20 +68,24 @@ const styles = StyleSheet.create({
     height: 140,
   },
   details: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
     height: '15%',
     padding: 10,
   },
   title: {
-    fontSize: 12,
+    fontSize: 16,
     marginVertical: 4,
     fontFamily: 'AirbnbCerealMedium',
     color: Colors.blackish,
   },
   price: {
-    fontSize: 10,
+    fontSize: 12,
     color: Colors.accent,
     fontFamily: 'AirbnbCerealBook',
+  },
+  description: {
+    fontFamily: 'AirbnbCerealLight',
+    fontSize: 10,
   },
   actions: {
     flexDirection: 'row',
@@ -85,4 +96,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductItem;
+export default CartItem;

@@ -13,11 +13,14 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import ProductItem from '../../components/shop/ProductItem';
 import NewItem from '../../components/shop/NewItem';
 import * as cartActions from '../../store/actions/cart';
 import * as productActions from '../../store/actions/products';
+import * as authActions from '../../store/actions/auth';
+
 import HeaderButton from '../../components/UI/Headerbutton';
 import Colors from '../../constants/Colors';
 
@@ -119,6 +122,8 @@ const ProductsOverviewScreen = props => {
 };
 
 export const screenOptions = navData => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const dispatch = useDispatch();
   return {
     headerTitle: () => {
       return (
@@ -132,7 +137,7 @@ export const screenOptions = navData => {
         <Item
           title="Cart"
           iconName={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
-          onPress={() => {}}
+          onPress={() => dispatch(authActions.logout())}
         />
       </HeaderButtons>
     ),
