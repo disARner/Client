@@ -163,7 +163,10 @@ export const screenOptions = navData => {
     headerTitle: () => {
       return (
         <View style={styles.logo}>
-          <Image source={require('../../assets/HeaderLogo.png')} />
+          <Image
+            style={{width: 120, height: 47.23, resizeMode: 'stretch'}}
+            source={require('../../assets/HeaderLogo.png')}
+          />
         </View>
       );
     },
@@ -190,6 +193,7 @@ export const screenOptions = navData => {
 const styles = StyleSheet.create({
   logo: {
     width: '100%',
+    // height: 14,
   },
   productHorizontal: {
     backgroundColor: '#ffffff',
