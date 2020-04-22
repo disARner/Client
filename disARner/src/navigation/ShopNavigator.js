@@ -108,7 +108,11 @@ const HomeTabs = () => {
   return (
     <Tab.Navigator tabBar={props => <MyTabBar {...props} />}>
       <Tab.Screen name="Home" component={ProductsOverviewScreen} />
-      <Tab.Screen name="Cart" component={CartScreen} />
+      <Tab.Screen
+        name="Cart"
+        options={{tabBarVisible: false}}
+        component={CartScreen}
+      />
       <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen name="Profile" component={ProductsOverviewScreen} />
     </Tab.Navigator>
