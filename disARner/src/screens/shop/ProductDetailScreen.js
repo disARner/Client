@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Platform,
+  ToastAndroid,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {CommonActions} from '@react-navigation/native';
@@ -24,6 +25,14 @@ const ProductDetailScreen = props => {
   const selectedProduct = useSelector(state =>
     state.products.availableProducts.find(prod => prod.id === productId),
   );
+
+  const showToastWithGravity = () => {
+    ToastAndroid.showWithGravity(
+      'Added to cart',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
+  };
   const dispatch = useDispatch();
   let TouchableCmp = TouchableOpacity;
   if (Platform.OS === 'android' && Platform.Version >= 21) {
@@ -93,25 +102,34 @@ const ProductDetailScreen = props => {
             </Text>
           </View>
           <View style={{backgroundColor: 'white', paddingVertical: '5%'}} />
-          <View style={[styles.buttonContainer]}>
-            <TouchableCmp onPress={() => {}}>
-              <View style={styles.buttonCircle}>
-                <Ionicons size={28} color="black" name="md-heart" />
-              </View>
-            </TouchableCmp>
-            <TouchableCmp onPress={() => {}}>
-              <View style={styles.buttonCircle}>
-                <Ionicons size={28} color="black" name="md-shirt" />
-              </View>
-            </TouchableCmp>
-            <TouchableCmp
-              onPress={() => {
-                addToCart();
-              }}>
-              <View style={styles.buttonAdd}>
-                <Text style={styles.buttonAddText}>Add to Cart</Text>
-              </View>
-            </TouchableCmp>
+          <View
+            style={{
+              backgroundColor: 'white',
+              flex: 1,
+              height: '100%',
+              padding: 43,
+            }}>
+            <View style={[styles.buttonContainer]}>
+              <TouchableCmp onPress={() => {}}>
+                <View style={styles.buttonCircle}>
+                  <Ionicons size={28} color="black" name="md-heart" />
+                </View>
+              </TouchableCmp>
+              <TouchableCmp onPress={() => {}}>
+                <View style={styles.buttonCircle}>
+                  <Ionicons size={28} color="black" name="md-shirt" />
+                </View>
+              </TouchableCmp>
+              <TouchableCmp
+                onPress={() => {
+                  addToCart();
+                  showToastWithGravity();
+                }}>
+                <View style={styles.buttonAdd}>
+                  <Text style={styles.buttonAddText}>Add to Cart</Text>
+                </View>
+              </TouchableCmp>
+            </View>
           </View>
         </View>
       </View>
