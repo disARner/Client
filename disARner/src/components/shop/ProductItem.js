@@ -8,6 +8,7 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
+import CurrencyFormatter from '../../utils/currencyFormatter';
 
 import Colors from '../../constants/Colors';
 
@@ -26,7 +27,7 @@ const ProductItem = props => {
             </View>
             <View style={styles.details}>
               <Text style={styles.title}>{props.title}</Text>
-              <Text style={styles.price}>Rp. {props.price.toFixed(2)}</Text>
+              <Text style={styles.price}>{CurrencyFormatter(props.price)}</Text>
             </View>
             <View style={styles.actions} />
           </View>

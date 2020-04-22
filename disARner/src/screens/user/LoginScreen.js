@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
   View,
@@ -6,8 +7,9 @@ import {
   StatusBar,
   Dimensions,
   TextInput,
+  TouchableOpacity,
 } from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import * as authActions from '../../store/actions/auth';
 
 import Colors from '../../constants/Colors';
@@ -39,7 +41,13 @@ const LoginScreen = ({navigation}) => {
       />
       <View
         style={{...styles.container, width: windowWidth, marginBottom: 100}}>
-        <Text style={{...styles.titleText, margin: 50, fontSize: 50}}>
+        <Text
+          style={{
+            ...styles.titleText,
+            margin: 50,
+            fontSize: 50,
+            fontFamily: 'AirbnbCerealExtraBold',
+          }}>
           disARner
         </Text>
         <Text style={styles.titleText}>Login</Text>
@@ -65,27 +73,37 @@ const LoginScreen = ({navigation}) => {
             onChangeText={text => setPassword(text)}
           />
         </View>
-
-        <View
-          style={{
-            ...styles.button,
-            width: 150,
-            marginVertical: 15,
-            paddingHorizontal: 5,
-          }}
-          onTouchStart={handleLogin}>
-          <Text style={{...styles.buttonText, fontSize: 15}}>Login</Text>
-        </View>
-        <View
-          style={{
-            ...styles.button,
-            width: 150,
-            marginVertical: 15,
-            paddingHorizontal: 5,
-          }}
-          onTouchStart={handleRegister}>
-          <Text style={{...styles.buttonText, fontSize: 15}}>Register</Text>
-        </View>
+        <TouchableOpacity>
+          <View
+            style={{
+              ...styles.button,
+              width: 150,
+              marginVertical: 15,
+              paddingHorizontal: 5,
+            }}
+            onTouchStart={handleLogin}>
+            <Text
+              style={{
+                ...styles.buttonText,
+                fontSize: 15,
+                fontFamily: 'AirbnbCerealMedium',
+              }}>
+              Login
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <View
+            style={{
+              ...styles.button,
+              width: 150,
+              marginVertical: 15,
+              paddingHorizontal: 5,
+            }}
+            onTouchStart={handleRegister}>
+            <Text style={{...styles.buttonText, fontSize: 15}}>Register</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -101,17 +119,19 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 30,
     color: '#37315e',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     textAlign: 'center',
+    fontFamily: 'AirbnbCerealMedium',
   },
   inputGroup: {
     padding: 5,
   },
   inputLabel: {
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     fontSize: 16,
     paddingHorizontal: 10,
     paddingBottom: 5,
+    fontFamily: 'AirbnbCerealBook',
   },
   textInput: {
     height: 40,
@@ -129,6 +149,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: Colors.blackish,
     width: 200,
+    elevation: 4,
   },
   buttonText: {
     fontSize: 16,
@@ -136,6 +157,7 @@ const styles = StyleSheet.create({
     margin: 10,
     color: '#fdfdfd',
     backgroundColor: 'transparent',
+    fontFamily: 'AirbnbCerealMedium',
   },
 });
 

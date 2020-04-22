@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
 import {useSelector, useDispatch} from 'react-redux';
 
 import {ProductsNavigator, AuthNavigator} from './ShopNavigator';

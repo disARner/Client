@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
-import AsyncStorage from '@react-native-community/async-storage';
 
 import ProductItem from '../../components/shop/ProductItem';
 import NewItem from '../../components/shop/NewItem';
@@ -32,7 +31,7 @@ const ProductsOverviewScreen = props => {
 
   const products = useSelector(state => state.products.availableProducts);
   const dispatch = useDispatch();
-
+  console.log(products[0].createdAt);
   useEffect(() => {
     dispatch(productActions.fetchProducts());
   }, [dispatch]);

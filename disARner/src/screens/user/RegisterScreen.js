@@ -1,19 +1,19 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
   View,
   Text,
-  Image,
-  Button,
   StyleSheet,
   StatusBar,
   Dimensions,
   TextInput,
+  TouchableOpacity,
 } from 'react-native';
 // import { useSelector, useDispatch } from 'react-redux';
 // import {} from '../../store';
 import Colors from '../../constants/Colors';
 
-const LoginScreen = ({navigation: {goBack}}) => {
+const RegisterScreen = ({navigation: {goBack}}) => {
   // const dispatch = useDispatch();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -33,8 +33,7 @@ const LoginScreen = ({navigation: {goBack}}) => {
         barStyle={'dark-content'}
         backgroundColor="transparent"
       />
-      <View
-        style={{...styles.container, width: windowWidth, marginBottom: 100}}>
+      <View style={{...styles.container, width: windowWidth, marginBottom: 50}}>
         <Text style={styles.titleText}>Register</Text>
 
         <View style={styles.inputGroup}>
@@ -70,16 +69,23 @@ const LoginScreen = ({navigation: {goBack}}) => {
           />
         </View>
 
-        <View
+        <TouchableOpacity
           style={{
             ...styles.button,
             width: 150,
             marginVertical: 20,
             paddingHorizontal: 5,
           }}
-          onTouchStart={handleSubmit}>
-          <Text style={{...styles.buttonText, fontSize: 15}}>Submit</Text>
-        </View>
+          onPress={handleSubmit}>
+          <Text
+            style={{
+              ...styles.buttonText,
+              fontSize: 15,
+              fontFamily: 'AirbnbCerealMedium',
+            }}>
+            Submit
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -95,18 +101,20 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 30,
     color: '#37315e',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     textAlign: 'center',
+    fontFamily: 'AirbnbCerealMedium',
   },
   inputGroup: {
     padding: 5,
     margin: 10,
   },
   inputLabel: {
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     fontSize: 16,
     paddingHorizontal: 10,
     paddingBottom: 5,
+    fontFamily: 'AirbnbCerealBook',
   },
   textInput: {
     height: 40,
@@ -130,8 +138,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
     color: '#fdfdfd',
+    fontFamily: 'AirbnbCerealLight',
     backgroundColor: 'transparent',
   },
 });
 
-export default LoginScreen;
+export default RegisterScreen;

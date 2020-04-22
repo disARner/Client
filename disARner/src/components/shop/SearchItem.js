@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
   View,
@@ -8,6 +9,7 @@ import {
   TouchableNativeFeedback,
   Platform,
 } from 'react-native';
+import CurrencyFormatter from '../../utils/currencyFormatter';
 
 import Colors from '../../constants/Colors';
 
@@ -26,7 +28,7 @@ const SearchItem = props => {
             </View>
             <View style={styles.details}>
               <Text style={styles.title}>{props.title}</Text>
-              <Text style={styles.price}>Rp. {props.price.toFixed(2)}</Text>
+              <Text style={styles.price}>{CurrencyFormatter(props.price)}</Text>
               <View style={{padding: 2, width: '85%'}}>
                 <Text style={styles.description}>{props.description}</Text>
               </View>
