@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   Platform,
@@ -28,13 +28,48 @@ const ProductsOverviewScreen = props => {
   if (Platform.OS === 'android' && Platform.Version >= 21) {
     TouchableCmp = TouchableNativeFeedback;
   }
+  const [cartoonView, setCartoonView] = useState(true);
+  const [artView, setArtView] = useState(false);
+  const [symbolView, setSymbolView] = useState(false);
 
-  const products = useSelector(state => state.products.availableProducts);
+  let products = useSelector(state => state.products.availableProducts);
   const dispatch = useDispatch();
-  console.log(products[0].createdAt);
+  const [filteredProducts, setFilteredProducts] = useState(products);
+  // let filteredProducts = [];
+
   useEffect(() => {
     dispatch(productActions.fetchProducts());
   }, [dispatch]);
+
+  const showCartoon = () => {
+    setCartoonView(true);
+    setArtView(false);
+    setSymbolView(false);
+    const productByCategory = products.filter(el => {
+      return el.CategoryId === 1;
+    });
+    setFilteredProducts(productByCategory);
+  };
+
+  const showArt = () => {
+    setCartoonView(false);
+    setArtView(true);
+    setSymbolView(false);
+    const productByCategory = products.filter(el => {
+      return el.CategoryId === 2;
+    });
+    setFilteredProducts(productByCategory);
+  };
+
+  const showSymbol = () => {
+    setCartoonView(false);
+    setArtView(false);
+    setSymbolView(true);
+    const productByCategory = products.filter(el => {
+      return el.CategoryId === 3;
+    });
+    setFilteredProducts(productByCategory);
+  };
 
   return (
     <ScrollView style={{paddingBottom: 10}}>
@@ -45,22 +80,22 @@ const ProductsOverviewScreen = props => {
           backgroundColor="transparent"
         />
         <View style={styles.categoryBar}>
-          <TouchableCmp>
+          <TouchableCmp onPress={showCartoon}>
             <View style={styles.textContainer}>
               <Text style={styles.categoryText}>Cartoon</Text>
-              <View style={styles.rectangle} />
+              {cartoonView ? <View style={styles.rectangle} /> : <></>}
             </View>
           </TouchableCmp>
-          <TouchableCmp>
+          <TouchableCmp onPress={showArt}>
             <View style={styles.textContainer}>
               <Text style={styles.categoryText}>Art</Text>
-              {/* <View style={styles.rectangle} /> */}
+              {artView ? <View style={styles.rectangle} /> : <></>}
             </View>
           </TouchableCmp>
-          <TouchableCmp>
+          <TouchableCmp onPress={showSymbol}>
             <View style={styles.textContainer}>
               <Text style={styles.categoryText}>Symbol</Text>
-              {/* <View style={styles.rectangle} /> */}
+              {symbolView ? <View style={styles.rectangle} /> : <></>}
             </View>
           </TouchableCmp>
         </View>
@@ -68,7 +103,7 @@ const ProductsOverviewScreen = props => {
           <View style={styles.productVertical}>
             <FlatList
               horizontal={true}
-              data={products}
+              data={filteredProducts}
               renderItem={itemData => (
                 <NewItem
                   image={itemData.item.imageUrl}
@@ -82,7 +117,7 @@ const ProductsOverviewScreen = props => {
                     });
                   }}
                   onAddToCart={() => {
-                    dispatch(cartActions.addToCart(itemData.item));
+                    dispatch(cartActions.addToCart(itemData));
                   }}
                 />
               )}

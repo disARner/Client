@@ -72,7 +72,7 @@ function MyTabBar({state, descriptors, navigation}) {
         if (route.name === 'Home') {
           iconName = 'md-home';
         } else if (route.name === 'Cart') {
-          iconName = 'md-list-box';
+          iconName = 'md-cart';
         } else if (route.name === 'Profile') {
           iconName = 'md-contact';
         } else if (route.name === 'Search') {
