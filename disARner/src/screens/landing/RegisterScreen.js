@@ -7,7 +7,8 @@ import {
   StyleSheet,
   StatusBar,
   Dimensions,
-  TextInput
+  TextInput,
+  TouchableOpacity
 } from 'react-native';
 // import { useSelector, useDispatch } from 'react-redux';
 // import {} from '../../store';
@@ -34,7 +35,7 @@ const LoginScreen = ({ navigation: { goBack }}) => {
         barStyle={'dark-content'}
         backgroundColor="transparent"
       />
-      <View style={{ ...styles.container, width: windowWidth, marginBottom: 100 }}>
+      <View style={{ ...styles.container, width: windowWidth, marginBottom: 50 }}>
         <Text style={styles.titleText}>
           Register
         </Text>
@@ -72,9 +73,9 @@ const LoginScreen = ({ navigation: { goBack }}) => {
           />
         </View>
 
-        <View style={{ ...styles.button, width: 150, marginVertical: 20, paddingHorizontal: 5 }} onTouchStart={handleSubmit}>
+        <TouchableOpacity style={{ ...styles.button, width: 150, marginVertical: 20, paddingHorizontal: 5 }} onPress={handleSubmit}>
           <Text style={{ ...styles.buttonText, fontSize: 15 }}>Submit</Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   )

@@ -5,7 +5,8 @@ import {
   StyleSheet,
   StatusBar,
   Dimensions,
-  TextInput
+  TextInput,
+  TouchableOpacity
 } from 'react-native';
 // import { useSelector, useDispatch } from 'react-redux';
 // import {} from '../../store';
@@ -65,12 +66,12 @@ const LoginScreen = ({ navigation }) => {
           />
         </View>
 
-        <View style={{ ...styles.button, width: 150, marginVertical: 15, paddingHorizontal: 5 }} onTouchStart={handleLogin}>
+        <TouchableOpacity style={{ ...styles.button, width: 150, marginVertical: 15, paddingHorizontal: 5 }} onPress={handleLogin}>
           <Text style={{ ...styles.buttonText, fontSize: 15 }}>Login</Text>
-        </View>
-        <View style={{ ...styles.button, width: 150, marginVertical: 15, paddingHorizontal: 5 }} onTouchStart={handleRegister}>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ ...styles.button, width: 150, marginVertical: 15, paddingHorizontal: 5 }} onPress={handleRegister}>
           <Text style={{ ...styles.buttonText, fontSize: 15 }}>Register</Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   )
