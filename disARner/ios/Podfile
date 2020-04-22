@@ -1,4 +1,4 @@
-platform :ios, '9.0'
+platform :ios, '9.3'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 def add_flipper_pods!(versions = {})
@@ -45,6 +45,10 @@ def flipper_post_install(installer)
 end
 
 target 'disARner' do
+  #Pods for Viro
+  use_frameworks!
+  pod 'ViroReact', :path => '../node_modules/react-viro/ios/'
+  pod 'ViroKit', :path => '../node_modules/react-viro/ios/dist/ViroRenderer/'
   # Pods for disARner
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
@@ -84,7 +88,6 @@ target 'disARner' do
   end
 
   use_native_modules!
-
   # Enables Flipper.
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and

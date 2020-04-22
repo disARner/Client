@@ -5,7 +5,7 @@ export const SET_CARTS = 'SET_CARTS';
 export const fetchCarts = () => async dispatch => {
   try {
     const token = await AsyncStorage.getItem('token');
-    const response = await api.get('http://localhost:3000/cart', {
+    const response = await api.get('http://192.168.43.47:3000/cart', {
       headers: {
         token,
       },

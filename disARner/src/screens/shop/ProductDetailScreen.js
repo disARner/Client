@@ -1,13 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
   Image,
+  Button,
   StyleSheet,
   ScrollView,
   StatusBar,
   Dimensions,
   TouchableOpacity,
+  TouchableNativeFeedback,
   Platform,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
@@ -19,12 +21,31 @@ import Colors from '../../constants/Colors';
 import * as cartActions from '../../store/actions/cart';
 import HeaderButton from '../../components/UI/Headerbutton';
 
+import { AppRegistry } from 'react-native';
+import {
+  ViroARSceneNavigator
+} from 'react-viro';
+const UNSET = "UNSET";
+const defaultNavigatorType = UNSET;
+const AR_NAVIGATOR_TYPE = "AR";
+
+
+const sharedprops = {
+  apiKey:"API_KEY_HERE",
+}
+
+const InitialARScene = require('./../AR/helper.js');
+
 const ProductDetailScreen = props => {
+  const [navigatorType, setNavigatorType] = useState(defaultNavigatorType)
+  const [sharedProps, setSharedProps] = useState(sharedprops)
+
   const productId = props.route.params.productId;
   const selectedProduct = useSelector(state =>
     state.products.availableProducts.find(prod => prod.id === productId),
   );
   const dispatch = useDispatch();
+  console.log(selectedProduct);
   let TouchableCmp = TouchableOpacity;
   if (Platform.OS === 'android' && Platform.Version >= 21) {
     TouchableCmp = TouchableOpacity;
@@ -37,81 +58,107 @@ const ProductDetailScreen = props => {
   const windowWidth = Dimensions.get('screen').width;
   const windowHeight = Dimensions.get('window').height;
 
-  return (
-    <ScrollView>
-      <StatusBar
-        translucent
-        barStyle={'dark-content'}
-        backgroundColor="transparent"
-      />
-      <View style={styles.headerBar}>
-        <View style={[styles.headerContainer, {width: windowWidth}]}>
-          <View style={styles.circle}>
-            <HeaderButtons HeaderButtonComponent={HeaderButton}>
-              <Item
-                buttonWrapperStyle={styles.circleWrapper}
-                title="Back"
-                iconName="md-arrow-back"
-                onPress={() => {
-                  back();
-                }}
-              />
-            </HeaderButtons>
-          </View>
-          <View stylee={styles.circle}>
-            <HeaderButtons HeaderButtonComponent={HeaderButton}>
-              <Item
-                buttonWrapperStyle={styles.circleWrapper}
-                title="Cart"
-                iconName="md-cart"
-                onPress={() => {}}
-              />
-            </HeaderButtons>
+  if (navigatorType == UNSET) {
+    return (
+      <ScrollView>
+        <StatusBar
+          translucent
+          barStyle={'dark-content'}
+          backgroundColor="transparent"
+        />
+        <View style={styles.headerBar}>
+          <View style={[styles.headerContainer, {width: windowWidth}]}>
+            <View style={styles.circle}>
+              <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                <Item
+                  buttonWrapperStyle={styles.circleWrapper}
+                  title="Back"
+                  iconName="md-arrow-back"
+                  onPress={() => {
+                    back();
+                  }}
+                />
+              </HeaderButtons>
+            </View>
+            <View stylee={styles.circle}>
+              <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                <Item
+                  buttonWrapperStyle={styles.circleWrapper}
+                  title="Cart"
+                  iconName="md-cart"
+                  onPress={() => {}}
+                />
+              </HeaderButtons>
+            </View>
           </View>
         </View>
-      </View>
-      <View style={{width: windowWidth}}>
-        <View style={{width: windowWidth, height: 508}}>
-          <Image
-            style={styles.image}
-            source={{uri: selectedProduct.imageUrl}}
-          />
-        </View>
-        <View style={styles.action}>
-          <View style={styles.infoContainer}>
-            <Text style={styles.name}>{selectedProduct.name}</Text>
-            <Text style={styles.price}>
-              Rp. {selectedProduct.price.toFixed(2)}
-            </Text>
-            <Text style={styles.descriptionText}>
-              {selectedProduct.description}
-            </Text>
+        <View style={{width: windowWidth}}>
+          <View style={{width: windowWidth, height: 508}}>
+            <Image
+              style={styles.image}
+              source={{uri: selectedProduct.imageUrl}}
+            />
           </View>
-          <View style={{backgroundColor: 'white', paddingVertical: '5%'}} />
-          <View style={[styles.buttonContainer]}>
-            <TouchableCmp onPress={() => {}}>
-              <View style={styles.buttonCircle}>
-                <Ionicons size={28} color="black" name="md-heart" />
-              </View>
-            </TouchableCmp>
-            <TouchableCmp onPress={() => {}}>
-              <View style={styles.buttonCircle}>
-                <Ionicons size={28} color="black" name="md-shirt" />
-              </View>
-            </TouchableCmp>
-            <TouchableCmp
-              onPress={() => {
-                dispatch(cartActions.addToCart(selectedProduct));
+          <View style={styles.action}>
+            <View style={styles.infoContainer}>
+              <Text style={styles.name}>{selectedProduct.name}</Text>
+              <Text style={styles.price}>
+                Rp. {selectedProduct.price.toFixed(2)}
+              </Text>
+              <Text style={styles.descriptionText}>
+                {selectedProduct.description}
+              </Text>
+            </View>
+            <View style={{backgroundColor: 'white', paddingVertical: '5%'}} />
+            <View style={[styles.buttonContainer]}>
+              <TouchableCmp onPress={() => {}}>
+                <View style={styles.buttonCircle}>
+                  <Ionicons size={28} color="black" name="md-heart" />
+                </View>
+              </TouchableCmp>
+              <TouchableCmp onPress={() => {
+                console.log('test')
+                console.log(AR_NAVIGATOR_TYPE)
+                _getExperienceButtonOnPress(AR_NAVIGATOR_TYPE)
               }}>
-              <View style={styles.buttonAdd}>
-                <Text style={styles.buttonAddText}>Add to Cart</Text>
-              </View>
-            </TouchableCmp>
+                <View style={styles.buttonCircle}>
+                  <Ionicons size={28} color="black" name="md-shirt" />
+                </View>
+              </TouchableCmp>
+              <TouchableCmp
+                onPress={() => {
+                  dispatch(cartActions.addToCart(selectedProduct));
+                }}>
+                <View style={styles.buttonAdd}>
+                  <Text style={styles.buttonAddText}>Add to Cart</Text>
+                </View>
+              </TouchableCmp>
+            </View>
           </View>
         </View>
-      </View>
-    </ScrollView>
-  );
+      </ScrollView>
+    );
+  } else if (navigatorType == AR_NAVIGATOR_TYPE) {
+    return _getARNavigator();
+  }
+
+  function _getARNavigator () {
+    return (
+      <>
+          <ViroARSceneNavigator {...sharedProps}
+            initialScene={{scene: InitialARScene}}/>
+          <Text style={{ backgroundColor: 'red', position: 'absolute',bottom: 10, margin: 10}}>
+            Back Button
+          </Text>
+      </>
+    );
+  }
+  function _getExperienceButtonOnPress (navigatorType) {
+    return () => {
+      console.log(navigatorType)
+      setNavigatorType(navigatorType)
+    }
+  }
 };
 
 export const screenOptions = navData => {
