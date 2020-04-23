@@ -88,7 +88,6 @@ const CartCard = props => {
     <View style={styles.cartCard}>
       <Image
         style={styles.cartImage}
-        // resizeMethod="resize"
         source={{uri: props.image}}
       />
       <View style={styles.cartInfo}>
@@ -156,7 +155,14 @@ const CheckoutScreen = props => {
   const dispatch = useDispatch();
 
   const carts = useSelector(state => state.cart.carts);
-  const total = useSelector(state => state.cart.total);
+  // const total = useSelector(state => state.cart.total);
+  
+  let total = 0
+  if (carts) {
+    carts.CartItems.forEach(itemData => {
+      total += itemData.item.Item.price
+    })
+  }
 
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
