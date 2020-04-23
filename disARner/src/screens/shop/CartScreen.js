@@ -157,11 +157,14 @@ const CheckoutScreen = props => {
   const carts = useSelector(state => state.cart.carts);
   // const total = useSelector(state => state.cart.total);
   
-  let total = 0
-  if (carts) {
-    carts.CartItems.forEach(itemData => {
-      total += itemData.item.Item.price
-    })
+ const total = () => {
+  let sum = 0
+    if (carts) {
+     carts.CartItems.forEach(itemData => {
+       sum += itemData.Item.price
+     })
+    }
+    return sum
   }
 
   const [isLoading, setIsLoading] = useState(false);
