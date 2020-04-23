@@ -8,9 +8,10 @@ import {
   Dimensions,
   TextInput,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
-// import { useSelector, useDispatch } from 'react-redux';
-// import {} from '../../store';
+import api from '../../api';
+
 import Colors from '../../constants/Colors';
 
 const RegisterScreen = ({navigation: {goBack}}) => {
@@ -20,9 +21,31 @@ const RegisterScreen = ({navigation: {goBack}}) => {
   const [password, setPassword] = useState('');
   const windowWidth = Dimensions.get('screen').width;
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     //dispatch()
-    goBack();
+    try {
+      await api({
+        method: 'POST',
+        url: '/register',
+        data: {
+          username: username,
+          email: email,
+          password: password,
+        },
+      });
+      ToastAndroid.showWithGravity(
+        'Register success, please login.',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+      goBack();
+    } catch (err) {
+      ToastAndroid.showWithGravity(
+        err.response.data[0].message,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+    }
   };
 
   return (

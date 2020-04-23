@@ -20,25 +20,25 @@ const NewItem = props => {
   }
 
   return (
-    <TouchableCmp>
-      <View style={styles.product}>
-        <View>
-          <ImageBackground
-            source={{uri: props.image}}
-            style={styles.imageContainer}>
-            <View style={{flex: 2}} />
-            <View style={styles.infoContainer}>
-              <Text style={styles.title}>{props.title}</Text>
+    // <TouchableCmp>
+    <View style={styles.product}>
+      <View>
+        <ImageBackground
+          source={{uri: props.image}}
+          style={styles.imageContainer}>
+          <View style={{flex: 2}} />
+          <View style={styles.infoContainer}>
+            <Text style={styles.title}>{props.title}</Text>
+            <ScrollView>
               {/* <View> */}
-              <ScrollView>
-                <Text style={styles.description}>{props.description}</Text>
-              </ScrollView>
-              {/* </View> */}
-            </View>
-          </ImageBackground>
-        </View>
+              <Text style={styles.description}>{props.description}</Text>
+            </ScrollView>
+            {/* </View> */}
+          </View>
+        </ImageBackground>
       </View>
-    </TouchableCmp>
+    </View>
+    // </TouchableCmp>
   );
 };
 

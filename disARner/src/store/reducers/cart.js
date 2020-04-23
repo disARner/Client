@@ -11,7 +11,6 @@ export default (state = initialState, action) => {
         carts: action.payload,
       };
     case SET_TOTAL:
-      console.log(action.payload, 'dari cart reducer set-total');
       return {
         carts: {...initialState, total: action.payload},
       };

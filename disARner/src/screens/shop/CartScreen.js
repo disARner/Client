@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -8,10 +8,9 @@ import {
   TouchableOpacity,
   FlatList,
   Dimensions,
-  StatusBar,
+  ActivityIndicator,
   Image,
 } from 'react-native';
-import {CommonActions} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -21,7 +20,6 @@ import api from '../../api';
 import * as cartActions from '../../store/actions/cart';
 import CurrencyFormatter from '../../utils/currencyFormatter';
 
-import CartItem from '../../components/shop/CartItem';
 import Colors from '../../constants/Colors';
 
 const CartCard = props => {
@@ -33,12 +31,12 @@ const CartCard = props => {
   const addQuantityHandler = async () => {
     try {
       let increament = 1;
-      if (quantity === stock) increament = 0;
+      if (quantity === stock) {
+        increament = 0;
+      }
       await setQuantity(quantity + increament);
       const token = await AsyncStorage.getItem('token');
-      console.log(props.id);
-      console.log(quantity, increament, '>>>>>>>>>>>>>>>');
-      const result = await api({
+      await api({
         method: 'PUT',
         url: `/cart/${props.id}`,
         data: {quantity: quantity + 1},
@@ -48,7 +46,6 @@ const CartCard = props => {
       });
       await dispatch(cartActions.fetchCarts());
     } catch (err) {
-      console.log(err);
       if (err.response) {
         console.log(err.response.data);
       }
@@ -58,12 +55,14 @@ const CartCard = props => {
   const decreaseQuantityHandler = async () => {
     try {
       let decreament = 1;
-      if (quantity === 1) decreament = 0;
+      if (quantity === 1) {
+        decreament = 0;
+      }
       setQuantity(quantity - decreament);
 
       const token = await AsyncStorage.getItem('token');
 
-      const result = await api({
+      await api({
         method: 'PUT',
         url: `/cart/${props.id}`,
         data: {quantity: quantity},
@@ -158,15 +157,55 @@ const CheckoutScreen = props => {
 
   const carts = useSelector(state => state.cart.carts);
   const total = useSelector(state => state.cart.total);
-  console.log(total);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [error, setError] = useState(undefined);
+
   useEffect(() => {
-    dispatch(cartActions.fetchCarts());
+    const loadCarts = async () => {
+      setIsLoading(true);
+      try {
+        await dispatch(cartActions.fetchCarts());
+      } catch (err) {
+        setError(err);
+      }
+      setIsLoading(false);
+    };
+    loadCarts();
   }, [dispatch]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const loadCart = useCallback(async () => {
+    setIsRefreshing(true);
+    try {
+      await dispatch(cartActions.fetchCarts());
+    } catch (err) {
+      setError(err);
+    }
+    setIsRefreshing(false);
+  });
+
+  if (error) {
+    return (
+      <View style={styles.loadingView}>
+        <Text>Something went wrong</Text>
+      </View>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingView}>
+        <ActivityIndicator size="large" color={Colors.accent} />
+      </View>
+    );
+  }
 
   const checkout = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
-      const result = await api.put({
+      await api.put({
         method: 'PUT',
         url: '/cart/checkout',
         headers: {
@@ -174,7 +213,6 @@ const CheckoutScreen = props => {
         },
       });
       await dispatch(cartActions.fetchCarts());
-      console.log(result.data);
     } catch (err) {
       console.log(err);
     }
@@ -185,6 +223,9 @@ const CheckoutScreen = props => {
       {carts ? (
         <FlatList
           data={carts.CartItems}
+          onRefresh={loadCart}
+          refreshing={isRefreshing}
+          refreshControl={isRefreshing}
           renderItem={itemData => (
             <CartCard
               image={itemData.item.Item.imageUrl}
@@ -275,6 +316,7 @@ const styles = StyleSheet.create({
     height: 180,
     marginVertical: 5,
     borderRadius: 6,
+    paddingRight: 5,
   },
   cartImageContainer: {
     flex: 1,
@@ -294,7 +336,8 @@ const styles = StyleSheet.create({
   cartInfo: {
     flex: 2,
     justifyContent: 'center',
-    // paddingLeft: 10,
+    paddingLeft: 10,
+    // marginLeft: 5,
   },
   quantityController: {
     flexDirection: 'row',
@@ -316,102 +359,9 @@ const styles = StyleSheet.create({
     elevation: 10,
     // flex: 1,
   },
+  loadingView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
-
-// const CartScreen = props => {
-//   const [text, setText] = useState('');
-//   const [filteredStates, setFilteredStates] = useState([]);
-//   const dispatch = useDispatch();
-
-//   const products = useSelector(state => state.products.availableProducts);
-//   const carts = useSelector(state => state.cart.carts);
-//   useEffect(() => {
-//     dispatch(cartActions.fetchCarts());
-//   }, []);
-
-//   console.log(carts, 'dari Cartscreens');
-
-//   useEffect(() => {
-//     const timer = setTimeout(() => {
-//       const filter = products.filter(state => {
-//         return state.name.toLowerCase().includes(text.toLowerCase());
-//       });
-
-//       setFilteredStates(filter);
-//     }, 1000);
-
-//     return () => clearTimeout(timer);
-//   }, [products, text]);
-
-//   const backButton = () => {
-//     props.navigation.dispatch(CommonActions.goBack());
-//     setText('');
-//   };
-
-//   return (
-//     <View>
-//       <View style={{marginVertical: 20}}>
-//         <FlatList
-//           data={carts.CartItems}
-//           renderItem={itemData => (
-//             <CartItem
-//               image={itemData.item.Item.imageUrl}
-//               title={itemData.item.Item.name}
-//               price={itemData.item.Item.price}
-//               quantity={itemData.item.quantity}
-//               description={itemData.item.description}
-//               onViewDetail={() => {
-//                 props.navigation.navigate('ProductDetail', {
-//                   productId: itemData.item.id,
-//                   productTitle: itemData.item.name,
-//                 });
-//               }}
-//             />
-//           )}
-//         />
-//       </View>
-//       <View style={styles.actionContainer}>
-//         <View style={{accent: 10}}>
-//           <Text style={{fontFamily: 'AirbnbCerealMedium'}}>Total:</Text>
-//           <Text style={styles.textTotal}>Rp. 20.125</Text>
-//         </View>
-//         <View style={styles.buttonAdd}>
-//           <Text style={styles.buttonAddText}>Checkout</Text>
-//         </View>
-//       </View>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   actionContainer: {
-//     width: '100%',
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     alignItems: 'center',
-//     paddingLeft: 20,
-//     paddingRight: 20,
-//   },
-//   buttonAdd: {
-//     height: 50,
-//     width: 180,
-//     backgroundColor: 'black',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     borderRadius: 6,
-//   },
-//   buttonAddText: {
-//     color: 'white',
-//     fontFamily: 'AirbnbCerealMedium',
-//     fontSize: 14,
-//     fontWeight: '400',
-//   },
-//   textTotal: {
-//     fontFamily: 'AirbnbCerealBook',
-//     fontSize: 18,
-//     color: Colors.accent,
-//     alignSelf: 'flex-end',
-//   },
-// });
-
-// export default CartScreen;

@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   FlatList,
   Platform,
@@ -10,6 +11,7 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
@@ -31,23 +33,32 @@ const ProductsOverviewScreen = props => {
   const [cartoonView, setCartoonView] = useState(true);
   const [artView, setArtView] = useState(false);
   const [symbolView, setSymbolView] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [error, setError] = useState(undefined);
   let products = useSelector(state => state.products.availableProducts);
   const dispatch = useDispatch();
   const [filteredProducts, setFilteredProducts] = useState(products);
   // let filteredProducts = [];
 
   useEffect(() => {
-    dispatch(productActions.fetchProducts());
+    const loadProducts = async () => {
+      setIsLoading(true);
+      try {
+        await dispatch(productActions.fetchProducts());
+      } catch (err) {
+        setError(err);
+      }
+      setIsLoading(false);
+    };
+    loadProducts();
   }, [dispatch]);
 
   const showCartoon = () => {
     setCartoonView(true);
     setArtView(false);
     setSymbolView(false);
-    const productByCategory = products.filter(el => {
-      return el.CategoryId === 1;
-    });
+    const productByCategory = products;
     setFilteredProducts(productByCategory);
   };
 
@@ -71,8 +82,46 @@ const ProductsOverviewScreen = props => {
     setFilteredProducts(productByCategory);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const loadProduct = useCallback(async () => {
+    setIsRefreshing(true);
+    try {
+      await dispatch(productActions.fetchProducts());
+    } catch (err) {
+      setError(err);
+    }
+    setIsRefreshing(false);
+  });
+
+  if (error) {
+    return (
+      <View style={styles.loadingView}>
+        <Text>Something went wrong</Text>
+      </View>
+    );
+  }
+
+  // if (!isLoading && filteredProducts.length === 0) {
+  //   return (
+  //     <View style={styles.loadingView}>
+  //       <Text>No products found.</Text>
+  //     </View>
+  //   );
+  // }
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingView}>
+        <ActivityIndicator size="large" color={Colors.accent} />
+      </View>
+    );
+  }
+
   return (
-    <ScrollView style={{paddingBottom: 10}}>
+    <ScrollView
+      onRefresh={loadProduct}
+      refreshControl={isRefreshing}
+      style={{paddingBottom: 10}}>
       <View>
         <StatusBar
           translucent
@@ -100,56 +149,74 @@ const ProductsOverviewScreen = props => {
           </TouchableCmp>
         </View>
         <View>
-          <View style={styles.productVertical}>
-            <FlatList
-              horizontal={true}
-              data={filteredProducts}
-              renderItem={itemData => (
-                <NewItem
-                  image={itemData.item.imageUrl}
-                  title={itemData.item.name}
-                  price={itemData.item.price}
-                  description={itemData.item.description}
-                  onViewDetail={() => {
-                    props.navigation.navigate('ProductDetail', {
-                      productId: itemData.item.id,
-                      productTitle: itemData.item.name,
-                    });
-                  }}
-                  onAddToCart={() => {
-                    dispatch(cartActions.addToCart(itemData));
-                  }}
-                />
-              )}
-            />
-          </View>
-          <View style={styles.productHorizontal}>
-            <View style={styles.popularTextContainer}>
-              <Text style={styles.popularProductText}>
-                Most Popular Products
+          {!isLoading && filteredProducts.length === 0 ? (
+            <View style={styles.loadingView}>
+              <Text
+                style={{
+                  fontFamily: 'AirbnbCerealMedium',
+                  fontSize: 20,
+                  color: Colors.grayish,
+                }}>
+                No products found.
               </Text>
             </View>
-            <FlatList
-              data={products}
-              horizontal={true}
-              renderItem={itemData => (
-                <ProductItem
-                  image={itemData.item.imageUrl}
-                  title={itemData.item.name}
-                  price={itemData.item.price}
-                  onViewDetail={() => {
-                    props.navigation.navigate('ProductDetail', {
-                      productId: itemData.item.id,
-                      productTitle: itemData.item.title,
-                    });
-                  }}
-                  onAddToCart={() => {
-                    dispatch(cartActions.addToCart(itemData.item));
-                  }}
+          ) : (
+            <>
+              <View style={styles.productVertical}>
+                <FlatList
+                  horizontal={true}
+                  data={filteredProducts}
+                  onRefresh={loadProduct}
+                  refreshing={isRefreshing}
+                  refreshControl={isRefreshing}
+                  renderItem={itemData => (
+                    <NewItem
+                      image={itemData.item.imageUrl}
+                      title={itemData.item.name}
+                      price={itemData.item.price}
+                      description={itemData.item.description}
+                      onViewDetail={() => {
+                        props.navigation.navigate('ProductDetail', {
+                          productId: itemData.item.id,
+                          productTitle: itemData.item.name,
+                        });
+                      }}
+                      onAddToCart={() => {
+                        dispatch(cartActions.addToCart(itemData));
+                      }}
+                    />
+                  )}
                 />
-              )}
-            />
-          </View>
+              </View>
+              <View style={styles.productHorizontal}>
+                <View style={styles.popularTextContainer}>
+                  <Text style={styles.popularProductText}>
+                    Most Popular Products
+                  </Text>
+                </View>
+                <FlatList
+                  data={products}
+                  horizontal={true}
+                  renderItem={itemData => (
+                    <ProductItem
+                      image={itemData.item.imageUrl}
+                      title={itemData.item.name}
+                      price={itemData.item.price}
+                      onViewDetail={() => {
+                        props.navigation.navigate('ProductDetail', {
+                          productId: itemData.item.id,
+                          productTitle: itemData.item.title,
+                        });
+                      }}
+                      onAddToCart={() => {
+                        dispatch(cartActions.addToCart(itemData.item));
+                      }}
+                    />
+                  )}
+                />
+              </View>
+            </>
+          )}
         </View>
       </View>
     </ScrollView>
@@ -247,6 +314,12 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     // alignSelf: 'flex-end',
     // flex: 1,
+  },
+  loadingView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: '30%',
   },
 });
 export default ProductsOverviewScreen;

@@ -9,7 +9,6 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_PRODUCTS:
-      console.log('masuk di SET_PRODUCTS');
       return {
         availableProducts: action.products,
       };

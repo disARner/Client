@@ -7,13 +7,12 @@ export const SET_TOTAL = 'SET_TOTAL';
 export const fetchCarts = () => async dispatch => {
   try {
     const token = await AsyncStorage.getItem('token');
-    const response = await api.get('http://localhost:3000/cart', {
+    const response = await api.get('/cart', {
       headers: {
         token,
       },
     });
     const loadedData = response.data;
-    console.log(loadedData);
     let total = 0;
     if (loadedData !== null) {
       response.data.CartItems.forEach(el => {
@@ -24,7 +23,7 @@ export const fetchCarts = () => async dispatch => {
 
     dispatch({type: SET_CARTS, payload: loadedData});
   } catch (err) {
-    console.log(err.response.data, 'dari error fetchcarts');
+    throw new Error(err.response);
   }
 };
 
@@ -32,7 +31,7 @@ export const addCart = ({ItemId, quantity}) => async dispatch => {
   try {
     const token = await AsyncStorage.getItem('token');
 
-    const result = await api({
+    await api({
       method: 'POST',
       url: '/cart',
       headers: {
@@ -43,7 +42,6 @@ export const addCart = ({ItemId, quantity}) => async dispatch => {
         quantity: quantity,
       },
     });
-    console.log(result.data);
   } catch (err) {
     if (err.response) {
       console.log(err.response.data);
@@ -55,7 +53,7 @@ export const removeCart = ItemId => async dispatch => {
   try {
     const token = await AsyncStorage.getItem('token');
 
-    const result = await api({
+    await api({
       method: 'DELETE',
       url: `/cart/${ItemId}`,
       headers: {

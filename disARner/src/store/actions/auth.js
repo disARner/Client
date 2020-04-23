@@ -15,7 +15,7 @@ export const login = (email, password) => async dispatch => {
     await AsyncStorage.setItem('token', result.data.token);
   } catch (err) {
     if (err.response) {
-      console.log(err.response.data);
+      throw new Error(err.response.data.message);
     }
   }
 };
@@ -38,7 +38,6 @@ export const logout = () => async dispatch => {
     await AsyncStorage.clear();
     dispatch({type: SET_AUTHENTICATED, payload: false});
   } catch (e) {
-    console.log(e);
     dispatch({type: SET_AUTHENTICATED, payload: true});
   }
 };

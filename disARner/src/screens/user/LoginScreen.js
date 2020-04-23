@@ -8,10 +8,10 @@ import {
   Dimensions,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import * as authActions from '../../store/actions/auth';
-
 import Colors from '../../constants/Colors';
 
 const LoginScreen = ({navigation}) => {
@@ -19,16 +19,22 @@ const LoginScreen = ({navigation}) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(undefined);
   const windowWidth = Dimensions.get('screen').width;
 
-  const handleLogin = e => {
+  const handleLogin = async e => {
     e.preventDefault();
-    dispatch(authActions.login(email, password));
+    setIsLoading(true);
+    try {
+      await dispatch(authActions.login(email, password));
+    } catch (err) {
+      setError(err);
+    }
+    setIsLoading(false);
   };
 
   const handleRegister = () => {
-    //dispatch()
     navigation.navigate('Register');
   };
 
@@ -51,6 +57,12 @@ const LoginScreen = ({navigation}) => {
           disARner
         </Text>
         <Text style={styles.titleText}>Login</Text>
+        {isLoading ? (
+          <ActivityIndicator size="large" color={Colors.accent} />
+        ) : (
+          <></>
+        )}
+        {error ? <Text>Email or password is wrong.</Text> : <></>}
         <View style={styles.inputGroup}>
           <Text style={styles.inputLabel}>Email</Text>
           <TextInput
@@ -158,6 +170,12 @@ const styles = StyleSheet.create({
     color: '#fdfdfd',
     backgroundColor: 'transparent',
     fontFamily: 'AirbnbCerealMedium',
+  },
+  loadingView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: '30%',
   },
 });
 
