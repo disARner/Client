@@ -203,11 +203,13 @@ const CheckoutScreen = props => {
   }
 
   const checkout = async () => {
+    setIsLoading(true);
     try {
       const token = await AsyncStorage.getItem('token');
-      await api.put({
+
+      await api({
         method: 'PUT',
-        url: '/cart/checkout',
+        url: 'cart/checkout',
         headers: {
           token: token,
         },
@@ -216,6 +218,7 @@ const CheckoutScreen = props => {
     } catch (err) {
       console.log(err);
     }
+    setIsLoading(false);
   };
 
   return (

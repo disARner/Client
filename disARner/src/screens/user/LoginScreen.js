@@ -27,6 +27,7 @@ const LoginScreen = ({navigation}) => {
     e.preventDefault();
     setIsLoading(true);
     try {
+      console.log('masuk di login');
       await dispatch(authActions.login(email, password));
     } catch (err) {
       setError(err);
