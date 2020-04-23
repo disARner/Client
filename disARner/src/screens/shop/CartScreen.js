@@ -86,10 +86,7 @@ const CartCard = props => {
 
   return (
     <View style={styles.cartCard}>
-      <Image
-        style={styles.cartImage}
-        source={{uri: props.image}}
-      />
+      <Image style={styles.cartImage} source={{uri: props.image}} />
       <View style={styles.cartInfo}>
         <Text style={{fontWeight: 'bold', fontSize: 20, paddingVertical: 10}}>
           {props.title}
@@ -156,16 +153,16 @@ const CheckoutScreen = props => {
 
   const carts = useSelector(state => state.cart.carts);
   // const total = useSelector(state => state.cart.total);
-  
- const total = () => {
-  let sum = 0
-    if (carts) {
-     carts.CartItems.forEach(itemData => {
-       sum += itemData.Item.price
-     })
-    }
-    return sum
-  }
+
+  // const total = () => {
+  //   let sum = 0;
+  //   if (carts.length) {
+  //     carts.CartItems.forEach(itemData => {
+  //       sum += itemData.Item.price;
+  //     });
+  //   }
+  //   return sum;
+  // };
 
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -266,7 +263,21 @@ const CheckoutScreen = props => {
             Total Harga:
           </Text>
           <Text style={{fontFamily: 'AirbnbCerealBook'}}>
-            {CurrencyFormatter(total)}
+            {carts ? (
+              carts.CartItems ? (
+                CurrencyFormatter(
+                  carts.CartItems.map(item => {
+                    let sum = 0;
+                    sum += item.Item.price * item.quantity;
+                    return sum;
+                  }),
+                )
+              ) : (
+                <Text>-</Text>
+              )
+            ) : (
+              <Text>-</Text>
+            )}
           </Text>
         </View>
         <TouchableOpacity style={styles.button} onPress={checkout}>

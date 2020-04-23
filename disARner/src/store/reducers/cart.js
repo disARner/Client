@@ -1,6 +1,6 @@
 import {SET_CARTS, SET_TOTAL} from '../actions/cart';
 const initialState = {
-  carts: [],
+  carts: {},
   total: 0,
 };
 
