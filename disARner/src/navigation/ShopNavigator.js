@@ -14,6 +14,7 @@ import SearchScreen from '../screens/shop/SearchScreen';
 import CartScreen from '../screens/shop/CartScreen';
 import LoginsCreen from '../screens/user/LoginScreen';
 import RegisterScreen from '../screens/user/RegisterScreen';
+import ARScreen from '../screens/AR/arscreen';
 
 import Colors from '../constants/Colors';
 import LoginScreen from '../screens/user/LoginScreen';
@@ -114,7 +115,7 @@ const HomeTabs = () => {
         component={CartScreen}
       />
       <Tab.Screen name="Search" component={SearchScreen} />
-      <Tab.Screen name="Profile" component={ProductsOverviewScreen} />
+      <Tab.Screen name="Profile" component={ARScreen} />
     </Tab.Navigator>
   );
 };
@@ -131,7 +132,7 @@ export const ProductsNavigator = () => {
       />
       <ProductsStackNavigator.Screen
         name="ProductDetail"
-        component={ProductDetailScreen}
+        component={ARScreen}
         options={ProductDetailScreenOptions}
       />
       <ProductsStackNavigator.Screen

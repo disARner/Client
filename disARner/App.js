@@ -12,7 +12,7 @@ import cartReducer from './src/store/reducers/cart';
 import userReducer from './src/store/reducers/auth';
 
 import AppNavigator from './src/navigation/AppNavigator';
-
+import ARScreen from './src/screens/AR/arscreen';
 const rootReducer = combineReducers({
   products: productsReducer,
   cart: cartReducer,
@@ -94,6 +94,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
+      {/* <ARScreen /> */}
       <AppNavigator />
     </Provider>
   );
