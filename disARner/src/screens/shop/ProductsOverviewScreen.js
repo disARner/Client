@@ -131,19 +131,19 @@ const ProductsOverviewScreen = props => {
         <View style={styles.categoryBar}>
           <TouchableCmp onPress={showCartoon}>
             <View style={styles.textContainer}>
-              <Text style={styles.categoryText}>Cartoon</Text>
+              <Text style={styles.categoryText}>Shirt</Text>
               {cartoonView ? <View style={styles.rectangle} /> : <></>}
             </View>
           </TouchableCmp>
           <TouchableCmp onPress={showArt}>
             <View style={styles.textContainer}>
-              <Text style={styles.categoryText}>Art</Text>
+              <Text style={styles.categoryText}>Pants</Text>
               {artView ? <View style={styles.rectangle} /> : <></>}
             </View>
           </TouchableCmp>
           <TouchableCmp onPress={showSymbol}>
             <View style={styles.textContainer}>
-              <Text style={styles.categoryText}>Symbol</Text>
+              <Text style={styles.categoryText}>T-Shirt</Text>
               {symbolView ? <View style={styles.rectangle} /> : <></>}
             </View>
           </TouchableCmp>

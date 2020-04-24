@@ -16,6 +16,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {CommonActions} from '@react-navigation/native';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import currencyFormatter from '../../utils/currencyFormatter';
 
 import Colors from '../../constants/Colors';
 import * as cartActions from '../../store/actions/cart';
@@ -96,7 +97,7 @@ const ProductDetailScreen = props => {
           <View style={styles.infoContainer}>
             <Text style={styles.name}>{selectedProduct.name}</Text>
             <Text style={styles.price}>
-              Rp. {selectedProduct.price.toFixed(2)}
+              {currencyFormatter(selectedProduct.price)}
             </Text>
             <Text style={styles.descriptionText}>
               {selectedProduct.description}
